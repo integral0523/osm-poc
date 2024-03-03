@@ -5,7 +5,7 @@ import osmtogeojson, { OsmToGeoJSONOptions } from "osmtogeojson";
 const overpassAPIPath = "http://overpass-api.de/api/interpreter?data=";
 const overpassQL = `
 [out:json];
-area["name"~"東京都"];
+area["name"="東京都"];
 node
     ['name' ~ '郵便局$'];
 out;
