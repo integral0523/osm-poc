@@ -1,0 +1,5 @@
+
+[out:json][maxsize:2000000000];
+area["name"~"東京都"]["boundary"="administrative"];
+relation["admin_level"=7];
+out skel;

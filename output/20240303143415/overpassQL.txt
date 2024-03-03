@@ -1,0 +1,6 @@
+
+[out:json];
+["area"="練馬区"]
+node
+    ['name' ~ '郵便局$'];
+out;
