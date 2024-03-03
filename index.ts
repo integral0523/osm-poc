@@ -2,13 +2,13 @@ import axios from "axios";
 import { mkdirSync, writeFileSync } from "fs";
 import osmtogeojson, { OsmToGeoJSONOptions } from "osmtogeojson";
 
-const overpassAPIPath = "http://overpass-api.de/api/interpreter?data=";
+const overpassAPIPath = "http://overpass-api.de/api/interpreter";
 const overpassQL = `
 [out:json];
-area["name"="東京都"];
-node
-    ['name' ~ '郵便局$'];
-out;
+area["name"~"練馬区"];
+nwr["type"="boundary"]["boundary"="administrative"]["admin_level"=7](area);
+(._;>;);
+out body;
 `;
 const outputPath = `./output/${new Date()
   .toLocaleString("sv-SE")
@@ -17,13 +17,23 @@ const outputPath = `./output/${new Date()
 mkdirSync(outputPath);
 writeFileSync(outputPath + "overpassQL.txt", overpassQL);
 
+const url =
+  overpassAPIPath +
+  "?data=" +
+  encodeURIComponent(overpassQL.replace(/\n/g, ""));
+console.log(url);
+
 axios
-  .get(overpassAPIPath + encodeURI(overpassQL))
+  .get(url)
   .then((response) => {
     writeFileSync(outputPath + "data.json", JSON.stringify(response.data));
     writeFileSync(
       outputPath + "test.geojson",
-      JSON.stringify(osmtogeojson(response.data, {} as OsmToGeoJSONOptions))
+      JSON.stringify(
+        osmtogeojson(response.data, {
+          flatProperties: true,
+        } as OsmToGeoJSONOptions)
+      )
     );
     console.log("DONE");
   })

@@ -1,0 +1,6 @@
+
+[out:json];
+area["name"~"練馬区"];
+nwr["type"="boundary"]["boundary"="administrative"]["admin_level"=7](area);
+(._;>;);
+out body;
